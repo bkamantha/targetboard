@@ -18,6 +18,9 @@ class DowntimeViewSet(viewsets.ModelViewSet):
     queryset = Downtime.objects.all()
     serializer_class = DowntimeSerializer
 
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['DTDate']
+
 
 class LeanBandViewSet(viewsets.ModelViewSet):
     queryset = LeanBand.objects.all()
