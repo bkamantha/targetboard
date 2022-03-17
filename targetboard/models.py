@@ -9,6 +9,7 @@ class LeanBand(models.Model):
 
 class ModuleTarget(models.Model):
     HeadID = models.AutoField(primary_key=True)
+    HeadNumber = models.IntegerField(null=True)
     TDate = models.DateField()
     LBId = models.CharField(max_length=15)
     Shift = models.CharField(max_length=2)
@@ -44,7 +45,7 @@ class ModuleTarget(models.Model):
 
 
 class Downtime(models.Model):
-    DTId = models.AutoField(primary_key=True, default=True)
+    DTId = models.AutoField(primary_key=True)
     DTDate = models.DateField(null=False)
     LBID = models.CharField(max_length=10, default=None)
     Shift = models.CharField(max_length=10, null=False)
