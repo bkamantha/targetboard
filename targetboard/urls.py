@@ -2,25 +2,18 @@ from django.urls import path, re_path
 from django.conf.urls import include
 from .import views
 from rest_framework import routers
-from targetboard.views import DowntimeViewSet, targetBoardViewSet
+from targetboard.views import HeadViewSet, DowntimeViewSet, targetBoardViewSet, LeanBandViewSet
 
 router = routers.DefaultRouter()
 router.register('ModuleTarget', views.targetBoardViewSet)
 
-Guest_Downtime_list = DowntimeViewSet.as_view({'get': 'list'})
-Guest_TargetBoard_list = targetBoardViewSet.as_view({'get': 'list'})
-Guest_Downtime_detail = DowntimeViewSet.as_view({'get': 'retrieve'})
-Guest_TargetBoard_detail = targetBoardViewSet.as_view({'get': 'retrieve'})
+Downtime_list = DowntimeViewSet.as_view({'get': 'list', 'post': 'create'})
 
-Downtime_list = DowntimeViewSet.as_view({
-    'get': 'list',
-    'post': 'create'
-})
+TargetBoard_list = targetBoardViewSet.as_view(
+    {'get': 'list', 'post': 'create'})
 
-TargetBoard_list = targetBoardViewSet.as_view({
-    'get': 'list',
-    'post': 'create'
-})
+Head_list = HeadViewSet.as_view(
+    {'get': 'list', 'post': 'create'})
 
 Downtime_detail = DowntimeViewSet.as_view({
     'get': 'retrieve',
@@ -36,17 +29,15 @@ TargetBoard_detail = targetBoardViewSet.as_view({
     'delete': 'destroy'
 })
 
-urlpatterns = [
-    # Guest Mode
-    path('Guest/Downtime/', Guest_Downtime_list, name='Guest_Downtime_list'),
-    path('Guest/TargetBoard/', Guest_TargetBoard_list),
-    path('Guest/Downtime/<int:pk>/', Guest_Downtime_detail,
-         name='Guest_Downtime_detail'),
-    path('Guest/TargetBoard/<int:pk>/',
-         Guest_TargetBoard_detail, name='Guest_TargetBoard_detail'),
+Leanband = LeanBandViewSet.as_view(
+    {'get': 'list', 'post': 'create'})
 
+
+urlpatterns = [
     # Admin Mode
+    path('LeanBand/', Leanband, name='Leanband'),
     path('Downtime/', Downtime_list, name='Downtime_list'),
+    path('Heads/', Head_list, name='Head_list'),
     path('TargetBoard/', TargetBoard_list, name='TargetBoard_detail'),
     path('Downtime/<int:pk>/', Downtime_detail, name='Downtime_detail'),
     path('TargetBoard/<int:pk>/', TargetBoard_detail, name='TargetBoard_detail'),

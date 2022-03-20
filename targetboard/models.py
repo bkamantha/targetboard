@@ -2,17 +2,29 @@ from django.db import models
 
 
 class LeanBand(models.Model):
-    BandId = models.AutoField(primary_key=True)
-    TLID = models.CharField(max_length=10)
-    GLID = models.CharField(max_length=10)
+    _Id = models.AutoField(primary_key=True)
+    lbname = models.IntegerField(default=None)
 
 
 class ModuleTarget(models.Model):
-    HeadID = models.AutoField(primary_key=True)
-    HeadNumber = models.IntegerField(null=True)
+    _Id = models.AutoField(primary_key=True)
+    lb_Id = models.ForeignKey(LeanBand, on_delete=models.CASCADE, default=None)
     TDate = models.DateField()
-    LBId = models.CharField(max_length=15)
     Shift = models.CharField(max_length=2)
+    HeadCount = models.IntegerField()
+
+
+class DowntimeCode(models.Model):
+    _id = models.AutoField(primary_key=True)
+    DTCode = models.CharField(max_length=10, null=False)
+    Department = models.CharField(max_length=10, null=False)
+
+
+class HeadsTarget(models.Model):
+    _Id = models.AutoField(primary_key=True)
+    module_id = models.ForeignKey(ModuleTarget, on_delete=models.CASCADE)
+
+    HeadNumber = models.IntegerField(null=True)
     Style = models.CharField(max_length=15)
     Size = models.CharField(max_length=15)
     planhour = models.IntegerField()
@@ -44,13 +56,10 @@ class ModuleTarget(models.Model):
     hour12re = models.IntegerField(null=True)
 
 
-class Downtime(models.Model):
-    DTId = models.AutoField(primary_key=True)
-    DTDate = models.DateField(null=False)
-    LBID = models.CharField(max_length=10, default=None)
-    Shift = models.CharField(max_length=10, null=False)
-    HeadNo = models.CharField(max_length=10, null=False)
+class HeadDowntime(models.Model):
+    _id = models.AutoField(primary_key=True)
+    Head_id = models.ForeignKey(HeadsTarget, on_delete=models.CASCADE)
     StartTime = models.TimeField(null=False)
     EndTime = models.TimeField(null=False)
-    DTCode = models.CharField(max_length=10, null=False)
+    DTCode = models.ForeignKey(DowntimeCode, on_delete=models.CASCADE)
     Status = models.CharField(max_length=10, default=None)

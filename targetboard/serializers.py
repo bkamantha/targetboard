@@ -1,12 +1,23 @@
 from rest_framework import serializers
-from .models import Downtime, ModuleTarget, LeanBand
-
+from .models import LeanBand, ModuleTarget, HeadsTarget, DowntimeCode, HeadDowntime
 # show data in api endpoint
 
 
-class ModuleSerializer(serializers.ModelSerializer):
+class ModuleSerializer(serializers.ModelSerializer): #setup 1
     class Meta:
         model = ModuleTarget
+        fields = '__all__'
+
+
+class HeadSerializer(serializers.ModelSerializer): 
+    class Meta:
+        model = HeadsTarget
+        fields = '__all__'
+
+
+class DowntimeCodeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DowntimeCode
         fields = '__all__'
 
 
@@ -18,5 +29,5 @@ class LeanBandSerializer(serializers.ModelSerializer):
 
 class DowntimeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Downtime
+        model = HeadDowntime
         fields = '__all__'
