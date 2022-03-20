@@ -3,16 +3,22 @@ from .models import LeanBand, ModuleTarget, HeadsTarget, DowntimeCode, HeadDownt
 # show data in api endpoint
 
 
-class ModuleSerializer(serializers.ModelSerializer): #setup 1
+class ModuleSerializer(serializers.ModelSerializer):  # setup 1
     class Meta:
         model = ModuleTarget
         fields = '__all__'
 
 
-class HeadSerializer(serializers.ModelSerializer): 
+class HeadSerializer(serializers.ModelSerializer):
     class Meta:
         model = HeadsTarget
         fields = '__all__'
+
+
+class HeadsconfigSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HeadsTarget
+        fields = ['module_id','HeadNumber','Style','Size','planhour','potenetialhour']
 
 
 class DowntimeCodeSerializer(serializers.ModelSerializer):

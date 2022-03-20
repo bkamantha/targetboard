@@ -1,6 +1,6 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from rest_framework import filters, generics, viewsets
-from .serializers import ModuleSerializer, LeanBandSerializer, HeadSerializer, DowntimeSerializer
+from .serializers import HeadsconfigSerializer, ModuleSerializer, LeanBandSerializer, HeadSerializer, DowntimeSerializer
 from .models import HeadDowntime, HeadsTarget, LeanBand, ModuleTarget, DowntimeCode
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -13,6 +13,26 @@ class targetBoardViewSet(viewsets.ModelViewSet):
 
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['TDate']
+
+    # def list(self, request):
+    #     return HttpResponse({"Connected to dashboard"}, status=200)
+
+    def create(self, request):
+        TDate = request.data['TDate']
+        Shift = request.data['Shift']
+        HeadCount = request.data['HeadCount']
+        lb_Id = request.data['lb_Id']
+        bandID = LeanBand.objects.get(pk=lb_Id)
+
+        record = ModuleTarget.objects.create(lb_Id=bandID,
+                                             TDate=TDate, Shift=Shift, HeadCount=HeadCount)
+
+        return JsonResponse({"recordID": record.pk, "Heads": int(HeadCount)}, status=200)
+
+
+class HeadConfigViewSet(viewsets.ModelViewSet):
+    queryset = HeadsTarget.objects.all()
+    serializer_class = HeadsconfigSerializer
 
 
 class HeadViewSet(viewsets.ModelViewSet):
