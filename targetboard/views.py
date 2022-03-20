@@ -1,8 +1,9 @@
 from django.http import HttpResponse
 from rest_framework import filters, generics, viewsets
-from .serializers import ModuleSerializer, LeanBandSerializer, DowntimeSerializer
-from .models import ModuleTarget, LeanBand, Downtime
+from .serializers import ModuleSerializer, LeanBandSerializer, HeadSerializer, DowntimeSerializer
+from .models import HeadDowntime, HeadsTarget, LeanBand, ModuleTarget, DowntimeCode
 from django_filters.rest_framework import DjangoFilterBackend
+
 # Create your views here.
 
 
@@ -14,8 +15,13 @@ class targetBoardViewSet(viewsets.ModelViewSet):
     filterset_fields = ['TDate']
 
 
+class HeadViewSet(viewsets.ModelViewSet):
+    queryset = HeadsTarget.objects.all()
+    serializer_class = HeadSerializer
+
+
 class DowntimeViewSet(viewsets.ModelViewSet):
-    queryset = Downtime.objects.all()
+    queryset = HeadDowntime.objects.all()
     serializer_class = DowntimeSerializer
 
     filter_backends = [DjangoFilterBackend]
